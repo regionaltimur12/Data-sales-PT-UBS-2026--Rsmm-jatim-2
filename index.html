@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Rekap Sales Regional - PT UBS (Ayam Geprek Sa'i)</title>
+    <title>Aplikasi Rekap Sales Regional - PT Ukhuwah Berkah Semesta (PT UBS)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
@@ -30,11 +30,14 @@
     <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-red-900 via-red-800 to-slate-900 p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border-t-4 border-amber-500">
             <div class="text-center mb-6">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-red-100 text-red-600 rounded-full mb-3 text-2xl font-bold shadow-inner">
-                    <i class="fa-solid fa-fire-flame-curved"></i>
+                <!-- Official Logo PT UBS & Sa'i -->
+                <div class="flex justify-center items-center gap-3 mb-3">
+                    <a href="https://ayamgepreksai.com/" target="_blank" title="Kunjungi Ayam Geprek Sa'i">
+                        <img src="https://ayamgepreksai.com/wp-content/uploads/2022/02/pt-ukhuwah-berkah-semesta-e1643902308386.png" alt="PT Ukhuwah Berkah Semesta" class="h-14 object-contain mx-auto">
+                    </a>
                 </div>
-                <h1 class="text-2xl font-black text-slate-900">PT USAHA BAROKAH SELARAS</h1>
-                <p class="text-xs font-semibold text-red-600 tracking-wider uppercase mt-1">Ayam Geprek Sa'i - Regional Timur & Selatan</p>
+                <h1 class="text-xl font-black text-slate-900">PT UKHUWAH BERKAH SEMESTA</h1>
+                <p class="text-xs font-semibold text-red-600 tracking-wider uppercase mt-1">Ayam Geprek Sa'i - Regional Timur 2</p>
             </div>
             <form id="loginForm" class="space-y-4">
                 <div>
@@ -55,7 +58,7 @@
                     Masuk Aplikasi <i class="fa-solid fa-arrow-right ml-2"></i>
                 </button>
             </form>
-            <p class="text-center text-xs text-slate-400 mt-6">&copy; 2026 Ayam Geprek Sa'i Management System</p>
+            <p class="text-center text-xs text-slate-400 mt-6">&copy; 2026 PT Ukhuwah Berkah Semesta Management</p>
         </div>
     </div>
 
@@ -65,18 +68,18 @@
         <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center font-bold text-xl shadow">
-                        <i class="fa-solid fa-fire"></i>
-                    </div>
+                    <a href="https://ayamgepreksai.com/" target="_blank">
+                        <img src="https://ayamgepreksai.com/wp-content/uploads/2022/02/pt-ukhuwah-berkah-semesta-e1643902308386.png" alt="Logo PT UBS" class="h-9 bg-white p-1 rounded">
+                    </a>
                     <div>
-                        <h2 class="font-extrabold text-sm sm:text-base tracking-wide">PT UBS - SALES MONITORING</h2>
-                        <p class="text-xs text-red-400 font-medium">Area Regional Timur & Selatan</p>
+                        <h2 class="font-extrabold text-xs sm:text-sm tracking-wide">PT UKHUWAH BERKAH SEMESTA</h2>
+                        <p class="text-[11px] text-red-400 font-medium">Monitoring Sales & Target - Regional Timur 2</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
                     <div class="text-right hidden sm:block">
                         <p id="userDisplay" class="text-xs font-bold text-slate-200">Nama (Jabatan)</p>
-                        <span class="inline-block px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[10px] font-bold rounded">Online Active</span>
+                        <span id="syncStatus" class="inline-block px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[10px] font-bold rounded">Cloud Connected</span>
                     </div>
                     <button onclick="logout()" class="px-3 py-1.5 bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
                         <i class="fa-solid fa-power-off"></i> <span class="hidden sm:inline">Keluar</span>
@@ -86,14 +89,17 @@
             <!-- Navigation Tabs -->
             <div class="bg-slate-800 border-t border-slate-700 px-4">
                 <div class="max-w-7xl mx-auto flex space-x-2 overflow-x-auto py-2">
-                    <button onclick="switchTab('tabSales')" id="btnTabSales" class="px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap shadow">
-                        <i class="fa-solid fa-chart-line"></i> 1. Input & Monitoring Sales 2026
+                    <button onclick="switchTab('tabSales')" id="btnTabSales" class="px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap shadow">
+                        <i class="fa-solid fa-chart-line"></i> 1. Sales & Target 2026 (Inc. Nov-Dec)
                     </button>
-                    <button onclick="switchTab('tabVs2025')" id="btnTabVs2025" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
+                    <button onclick="switchTab('tabVs2025')" id="btnTabVs2025" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
                         <i class="fa-solid fa-code-compare"></i> 2. Sales 2026 vs 2025
                     </button>
-                    <button onclick="switchTab('tabAnalysis')" id="btnTabAnalysis" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
-                        <i class="fa-solid fa-brain"></i> 3. Grafik & Analisa Akhir
+                    <button onclick="switchTab('tabTarget2027')" id="btnTabTarget2027" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-calendar-days"></i> 3. Target & Acuan VS 2027
+                    </button>
+                    <button onclick="switchTab('tabAnalysis')" id="btnTabAnalysis" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-brain"></i> 4. Grafik & Analisa Akhir
                     </button>
                 </div>
             </div>
@@ -102,26 +108,19 @@
         <!-- CONTENT AREA -->
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
 
-            <!-- TAB 1: SALES & TARGET 2026 -->
+            <!-- TAB 1: SALES & TARGET 2026 (INC. NOV-DEC) -->
             <div id="tabSales" class="space-y-6">
                 <!-- Filter Controls -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 flex flex-wrap gap-4 items-center justify-between">
                     <div>
-                        <h3 class="text-base font-bold text-slate-900">Data Capaian Sales & Target 2026</h3>
-                        <p class="text-xs text-slate-500">Pilih filter tahun dan bulan untuk melihat rincian performa store.</p>
+                        <h3 class="text-base font-bold text-slate-900">Data Capaian Sales & Target 2026 (Lengkap Nov-Des)</h3>
+                        <p class="text-xs text-slate-500">Data tersimpan otomatis ke Google Sheet saat Anda memperbarui nilai sales.</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Tahun</label>
-                            <select id="filterYear" onchange="renderSalesData()" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500">
-                                <option value="2026">2026</option>
-                                <option value="2025">2025 (Arsip)</option>
-                            </select>
-                        </div>
                         <div class="flex-1 sm:flex-initial">
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Bulan</label>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Pilih Bulan</label>
                             <select id="filterMonth" onchange="renderSalesData()" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500 w-full">
-                                <option value="ALL">Semua Bulan (Kumulatif)</option>
+                                <option value="ALL">Semua Bulan (Kumulatif Jan - Des)</option>
                                 <option value="0">Januari</option>
                                 <option value="1">Februari</option>
                                 <option value="2">Maret</option>
@@ -132,8 +131,8 @@
                                 <option value="7">Agustus</option>
                                 <option value="8">September</option>
                                 <option value="9">Oktober</option>
-                                <option value="10">November (Belum Terisi)</option>
-                                <option value="11">Desember (Belum Terisi)</option>
+                                <option value="10">November (Input Aktif)</option>
+                                <option value="11">Desember (Input Aktif)</option>
                             </select>
                         </div>
                     </div>
@@ -142,14 +141,14 @@
                 <!-- Summary Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 border-l-4 border-l-blue-500">
-                        <p class="text-xs font-bold text-slate-400 uppercase">Total Sales Terdata</p>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Total Sales Regional 2026</p>
                         <h4 id="sumTotalSales" class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Rp 0</h4>
-                        <span class="text-[11px] text-blue-600 font-semibold mt-1 inline-block"><i class="fa-solid fa-circle-info mr-1"></i>Januari - Oktober 2026</span>
+                        <span class="text-[11px] text-blue-600 font-semibold mt-1 inline-block"><i class="fa-solid fa-circle-info mr-1"></i>Termasuk Nov & Des</span>
                     </div>
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 border-l-4 border-l-amber-500">
                         <p class="text-xs font-bold text-slate-400 uppercase">Total Target Regional</p>
                         <h4 id="sumTotalTarget" class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Rp 0</h4>
-                        <span class="text-[11px] text-amber-600 font-semibold mt-1 inline-block"><i class="fa-solid fa-bullseye mr-1"></i>Target Periode Berjalan</span>
+                        <span class="text-[11px] text-amber-600 font-semibold mt-1 inline-block"><i class="fa-solid fa-bullseye mr-1"></i>Target 12 Bulan Penuh</span>
                     </div>
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 border-l-4 border-l-emerald-500">
                         <p class="text-xs font-bold text-slate-400 uppercase">Persentase Capaian (%)</p>
@@ -158,10 +157,10 @@
                     </div>
                 </div>
 
-                <!-- Stores Table & Store Selector for Chart -->
+                <!-- Stores Table -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="p-4 sm:p-6 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
-                        <h3 class="font-bold text-slate-900 text-sm sm:text-base"><i class="fa-solid fa-store text-red-600 mr-2"></i>Daftar Store & Capaian Target 2026</h3>
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base"><i class="fa-solid fa-store text-red-600 mr-2"></i>Daftar Store Regional Timur 2 & Input Nov-Des</h3>
                         <div class="text-xs text-slate-500">Klik baris store untuk melihat grafik performa detail di bawah.</div>
                     </div>
                     <div class="overflow-x-auto max-h-[500px]">
@@ -174,7 +173,7 @@
                                     <th class="p-3 text-right">Sales 2026 (Rp)</th>
                                     <th class="p-3 text-right">Target (Rp)</th>
                                     <th class="p-3 text-center">Capaian (%)</th>
-                                    <th class="p-3 text-center">Status</th>
+                                    <th class="p-3 text-center">Aksi Input Nov / Des</th>
                                 </tr>
                             </thead>
                             <tbody id="storesTableBody" class="divide-y divide-slate-200">
@@ -209,9 +208,7 @@
                             <h3 class="font-bold text-slate-900 text-base"><i class="fa-solid fa-code-compare text-red-600 mr-2"></i>Data Sales 2026 vs Tahun Sebelumnya (2025)</h3>
                             <p class="text-xs text-slate-500">Store yang tutup atau relokasi otomatis disesuaikan tanpa pembanding tahun lalu.</p>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-lg text-xs font-bold">Fokus Data Tahun Ini</span>
-                        </div>
+                        <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-lg text-xs font-bold">Fokus Data Tahun Ini</span>
                     </div>
                     <div class="overflow-x-auto max-h-[600px]">
                         <table class="w-full text-left border-collapse text-xs">
@@ -233,11 +230,42 @@
                 </div>
             </div>
 
-            <!-- TAB 3: GRAFIK & ANALISA AKHIR -->
+            <!-- TAB 3: TARGET & ACUAN VS 2027 -->
+            <div id="tabTarget2027" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base"><i class="fa-solid fa-calendar-days text-red-600 mr-2"></i>Perencanaan & Input Target Tahun 2027</h3>
+                            <p class="text-xs text-slate-500">Acuan pembanding (VS 2026) secara otomatis mengambil total sales 2026 lengkap (termasuk input Nov & Des).</p>
+                        </div>
+                        <button onclick="saveTarget2027()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Target 2027 ke Cloud
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto max-h-[600px]">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead class="bg-slate-100 text-slate-700 uppercase font-bold sticky top-0 z-10">
+                                <tr>
+                                    <th class="p-3 text-center w-12">No</th>
+                                    <th class="p-3">Nama Store</th>
+                                    <th class="p-3 text-right">Acuan VS (Realisasi 2026)</th>
+                                    <th class="p-3 text-right">Target 2027 (Rp)</th>
+                                    <th class="p-3 text-center">Proyeksi Growth (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="target2027TableBody" class="divide-y divide-slate-200">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: GRAFIK & ANALISA AKHIR -->
             <div id="tabAnalysis" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6">
-                    <h3 class="font-bold text-slate-900 text-base mb-1"><i class="fa-solid fa-chart-area text-red-600 mr-2"></i>Grafik Tren Konsolidasi Regional 2026</h3>
-                    <p class="text-xs text-slate-500 mb-4">Grafik kumulatif pencapaian sales seluruh store dari Januari sampai Oktober 2026.</p>
+                    <h3 class="font-bold text-slate-900 text-base mb-1"><i class="fa-solid fa-chart-area text-red-600 mr-2"></i>Grafik Tren Konsolidasi Regional Timur 2 (2026)</h3>
+                    <p class="text-xs text-slate-500 mb-4">Grafik kumulatif pencapaian sales seluruh store dari Januari sampai Desember 2026.</p>
                     <div class="relative h-80 w-full">
                         <canvas id="regionalTrendChart"></canvas>
                     </div>
@@ -250,18 +278,18 @@
                             <i class="fa-solid fa-lightbulb"></i>
                         </div>
                         <div>
-                            <h4 class="font-extrabold text-base">Analisa & Rekomendasi Manajemen Regional 2026/2027</h4>
-                            <p class="text-xs text-amber-300">Dihasilkan dari rekap data operasional store Timur & Selatan</p>
+                            <h4 class="font-extrabold text-base">Analisa & Rekomendasi Manajemen PT UBS - Regional Timur 2</h4>
+                            <p class="text-xs text-amber-300">Dihasilkan dari rekapitulasi data operasional store terintegrasi</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 text-xs text-slate-300 leading-relaxed">
                         <div class="bg-white/10 p-4 rounded-xl backdrop-blur border border-white/10 space-y-2">
-                            <strong class="text-white block font-bold text-sm"><i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i> Evaluasi Performa Store Top</strong>
-                            <p>Store seperti <strong>AGS Caruban</strong>, <strong>AGS Nganjuk Brebek</strong>, dan <strong>AGS Sragen A Yani</strong> konsisten mencatatkan kontribusi sales tertinggi di atas rata-rata regional. Pertahankan suplai bahan baku dan kontrol kualitas operasional harian.</p>
+                            <strong class="text-white block font-bold text-sm"><i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i> Evaluasi Performa Store Unggulan</strong>
+                            <p>Store seperti <strong>AGS Caruban</strong>, <strong>AGS Nganjuk Brebek</strong>, dan <strong>AGS Sragen A Yani</strong> konsisten memimpin kontribusi sales regional. Pengendalian kualitas bahan baku dan kecepatan layanan menjadi kunci utama.</p>
                         </div>
                         <div class="bg-white/10 p-4 rounded-xl backdrop-blur border border-white/10 space-y-2">
-                            <strong class="text-white block font-bold text-sm"><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1.5"></i> Strategi Jelang Akhir Tahun (Nov - Des)</strong>
-                            <p>Mengingat periode November dan Desember belum terisi penuh, diperlukan program promosi khusus (seperti bundling menu baru Hot Chili Sauce, Butter Sauce, & Garlic Sauce) guna mendongkrak pencapaian target tahunan mendekati 100%.</p>
+                            <strong class="text-white block font-bold text-sm"><i class="fa-solid fa-bullseye text-amber-400 mr-1.5"></i> Strategi Proyeksi Tahun 2027</strong>
+                            <p>Dengan terisinya data November dan Desember 2026, acuan target 2027 dapat ditetapkan secara presisi menggunakan pertumbuhan berbasis data riil (real-time baseline) untuk ekspansi store baru.</p>
                         </div>
                     </div>
                 </div>
@@ -270,69 +298,111 @@
         </main>
     </div>
 
-    <!-- JAVASCRIPT LOGIC & EMBEDDED DATA -->
+    <!-- MODAL EDIT NOV / DEC -->
+    <div id="modalEditMonth" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 space-y-4">
+            <h3 id="modalStoreTitle" class="font-bold text-slate-900 text-base">Input Sales Store</h3>
+            <input type="hidden" id="modalStoreIdx">
+            <input type="hidden" id="modalMonthType">
+            <div>
+                <label id="modalLabelMonth" class="block text-xs font-bold text-slate-700 uppercase mb-1">Nilai Sales (Rp)</label>
+                <input type="number" id="modalInputVal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-red-500">
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold">Batal</button>
+                <button onclick="saveModalVal()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold">Simpan ke Sheet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & GOOGLE SHEET SYNC -->
     <script>
-        // Data Store komprehensif diekstrak langsung dari file Excel rekap (55 Store Aktif & Terdata)
+        // URL Web App Google Apps Script Anda
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwkn2XOtgH5AwLlf2-3znnF7m_o865eHTqiNXNTJQ8fpKZekpmTC5VXSFKSh56UlLlf/exec";
+
+        // Data Store lengkap untuk PT Ukhuwah Berkah Semesta (Regional Timur 2)
         const storeDatabase = [
-            { no: 1, store: "AGS NGANJUK", openDate: "2019-08-03", sales2026: [132194500, 102239975, 152965250, 128645537, 128944350, 137521256, 132919025, 141354275, 120853900, 138001388, 0, 0], target: 140000000, sales2025: 1506893471 },
-            { no: 2, store: "AGS CARUBAN", openDate: "2019-06-26", sales2026: [168407600, 137585725, 214347025, 166247900, 177854350, 170447000, 171097375, 163746300, 140425050, 164808300, 0, 0], target: 180000000, sales2025: 2046109262 },
-            { no: 3, store: "AGS KEDIRI BANDAR LOR", openDate: "2021-04-12", sales2026: [95754800, 77388390, 120997525, 105539511, 113282999, 122449375, 109919413, 99189300, 109790825, 113931745, 0, 0], target: 130000000, sales2025: 1109601843 },
-            { no: 4, store: "AGS NGANJUK BREBEK", openDate: "2022-05-28", sales2026: [123551525, 113413725, 181119000, 121979700, 137880950, 152369950, 117841725, 134979346, 103951250, 120171125, 0, 0], target: 125000000, sales2025: 1493517527 },
-            { no: 5, store: "AGS KEDIRI WONOASRI", openDate: "2022-05-21", sales2026: [108530305, 103430925, 158853427, 112570225, 105059200, 97541725, 93966625, 92223880, 86322365, 94821125, 0, 0], target: 125000000, sales2025: 1319153143 },
-            { no: 6, store: "AGS NGANJUK A.YANI", openDate: "2023-04-03", sales2026: [96278100, 68122075, 111866150, 89993475, 80684750, 89413400, 83395025, 93168200, 78126200, 81855375, 0, 0], target: 125000000, sales2025: 1142422950 },
-            { no: 7, store: "AGS BEGADUNG NGANJUK", openDate: "2024-09-29", sales2026: [114796900, 90583050, 132897925, 110498150, 120431575, 119566775, 113913875, 122622400, 109484350, 118744950, 0, 0], target: 115000000, sales2025: 850000000 },
-            { no: 8, store: "AGS KERTOSONO", openDate: "2022-12-17", sales2026: [80926190, 71893625, 130527925, 82514650, 103081225, 92131150, 86021750, 92401525, 78435725, 82704200, 0, 0], target: 95000000, sales2025: 900000000 },
-            { no: 9, store: "AGS AR SALEH", openDate: "2026-06-06", sales2026: [0, 0, 0, 0, 0, 77748125, 70292200, 80321050, 72666150, 108977625, 0, 0], target: 80000000, sales2025: 0 }, // Store baru (Tanpa VS 2025)
-            { no: 10, store: "AGS PONOROGO", openDate: "2018-11-16", sales2026: [92656950, 86033975, 126195625, 97413725, 106700850, 111270450, 98754200, 96186000, 98645850, 89832150, 0, 0], target: 105000000, sales2025: 980000000 },
-            { no: 11, store: "AGS MAGETAN JL. PANGLIMA SUDIRMAN", openDate: "2019-11-15", sales2026: [101089800, 87677850, 125029900, 101420825, 102379975, 95206600, 85271200, 90143400, 82803300, 115767900, 0, 0], target: 100000000, sales2025: 970000000 },
-            { no: 12, store: "AGS MAGETAN MONGINSIDI", openDate: "2023-03-18", sales2026: [111622925, 92677850, 131526925, 101644500, 111113875, 111050450, 107278575, 108174100, 100026925, 117788975, 0, 0], target: 110000000, sales2025: 1050000000 },
-            { no: 13, store: "AGS MADIUN MARHADI", openDate: "2023-07-08", sales2026: [97695675, 74774400, 107584400, 88651650, 92886751, 98295175, 86372825, 94700125, 87004750, 86882661, 0, 0], target: 95000000, sales2025: 900000000 },
-            { no: 14, store: "AGS MAGETAN MT HARYONO", openDate: "2025-06-12", sales2026: [67483400, 67720805, 93677500, 75870395, 73910150, 78019900, 65983950, 72972700, 78198000, 93962850, 0, 0], target: 80000000, sales2025: 450000000 },
-            { no: 15, store: "AGS MAGETAN TEMBORO", openDate: "2025-12-13", sales2026: [71312077, 74483070, 63301425, 105638375, 77987550, 83605325, 73872576, 78553500, 67417475, 71458700, 0, 0], target: 75000000, sales2025: 100000000 },
-            { no: 16, store: "AGS BEJI TULUNGAGUNG", openDate: "2021-08-28", sales2026: [73034450, 69287450, 91419700, 81946650, 84604735, 85588600, 87693550, 91705325, 80786275, 77238225, 0, 0], target: 85000000, sales2025: 810000000 },
-            { no: 17, store: "AGS NGUNUT TULUNGAGUNG", openDate: "2022-02-04", sales2026: [106562500, 93865475, 157265450, 108607625, 110102325, 104425825, 108686900, 112882650, 103747700, 111709700, 0, 0], target: 110000000, sales2025: 1100000000 },
-            { no: 18, store: "AGS TEUKU UMAR / EX AGS BAGO", openDate: "2022-05-14", sales2026: [98660825, 94366750, 129805500, 108495825, 59258025, 97675475, 89128950, 107357650, 108616650, 107911900, 0, 0], target: 105000000, sales2025: 990000000 },
-            { no: 19, store: "AGS NGEMPLAK TULUNGAGUNG", openDate: "2025-05-23", sales2026: [63957050, 62114350, 93415375, 66133625, 37500225, 0, 0, 0, 0, 0, 0, 0], target: 75000000, sales2025: 200000000 },
-            { no: 20, store: "AGS NGANTRU TULUNGAGUNG", openDate: "2025-02-22", sales2026: [75857350, 67080300, 111915525, 88108650, 94289950, 91535400, 89771200, 8878750, 86263975, 89529850, 0, 0], target: 90000000, sales2025: 400000000 },
-            { no: 21, store: "AGS BLITAR PATOK", openDate: "2019-05-10", sales2026: [148794800, 139573150, 220502545, 157666891, 171553100, 156498950, 145893295, 156572575, 152765525, 161437650, 0, 0], target: 160000000, sales2025: 1580000000 },
-            { no: 22, store: "AGS SAMBI KEDIRI", openDate: "2020-02-12", sales2026: [102283100, 94875450, 161729850, 103756250, 102531700, 111634050, 105921325, 114391775, 100358925, 105847725, 0, 0], target: 110000000, sales2025: 1080000000 },
-            { no: 23, store: "AGS WATES KEDIRI", openDate: "2021-12-06", sales2026: [104752602, 94189175, 182126225, 103040620, 116481800, 123392600, 125745675, 132958000, 125009350, 127545075, 0, 0], target: 120000000, sales2025: 1200000000 },
-            { no: 24, store: "AGS KEDIRI GURAH / EX DLOPO", openDate: "2021-11-09", sales2026: [87718175, 76379487, 117368500, 81649525, 92796575, 81552225, 80341075, 99497626, 37897700, 113639325, 0, 0], target: 90000000, sales2025: 850000000 },
-            { no: 25, store: "AGS PARE SUDIRMAN", openDate: "2021-06-11", sales2026: [135142250, 125049800, 185774175, 128791825, 138303275, 138282850, 125776775, 143814700, 130038725, 127360225, 0, 0], target: 135000000, sales2025: 1350000000 },
-            { no: 26, store: "AGS MOJO KEDIRI", openDate: "2022-03-26", sales2026: [137761675, 122619125, 182018250, 122162325, 146643975, 155057000, 143828620, 155797825, 151115650, 149902975, 0, 0], target: 140000000, sales2025: 1420000000 },
-            { no: 27, store: "AGS MOJOSARI 21", openDate: "2020-07-03", sales2026: [102551100, 88466900, 134630200, 83893100, 86929150, 85293100, 78482400, 84208100, 65848700, 72479375, 0, 0], target: 95000000, sales2025: 900000000 },
-            { no: 28, store: "AGS MOJOKERTO NGORO", openDate: "2021-09-25", sales2026: [100808450, 88800000, 123209800, 93475450, 109753775, 92873800, 85776050, 90306950, 84106325, 85489025, 0, 0], target: 95000000, sales2025: 930000000 },
-            { no: 29, store: "AGS MOJOKERTO BASUNI", openDate: "2020-10-18", sales2026: [108413000, 89517074, 134539525, 101704450, 115331400, 111606025, 99109574, 95958300, 85392850, 90630274, 0, 0], target: 105000000, sales2025: 1010000000 },
-            { no: 30, store: "AGS MOJOSARI PEMUDA", openDate: "2022-01-15", sales2026: [86922925, 73840250, 106601775, 66830225, 80601590, 76567450, 68692350, 79103250, 68696700, 66179275, 0, 0], target: 80000000, sales2025: 780000000 },
-            { no: 31, store: "AGS MOJOKERTO MERI", openDate: "2022-03-19", sales2026: [82960850, 68972775, 104511475, 89358050, 92934974, 92704062, 89669775, 79660153, 69919858, 77231065, 0, 0], target: 85000000, sales2025: 830000000 },
-            { no: 32, store: "AGS PACET", openDate: "2024-11-16", sales2026: [147697840, 118307550, 150016977, 155124545, 186173300, 164590819, 160117225, 159117750, 137771250, 159985225, 0, 0], target: 140000000, sales2025: 1100000000 },
-            { no: 33, store: "AGS SUNAN DRAJAT", openDate: "2019-03-29", sales2026: [128528700, 125058100, 206870605, 143078731, 145814100, 147313800, 133665650, 140522950, 144522500, 138461150, 0, 0], target: 140000000, sales2025: 1420000000 },
-            { no: 34, store: "AGS KARANGLANGIT", openDate: "2020-01-25", sales2026: [93681800, 83065450, 136328850, 86634950, 102723450, 88263800, 79116500, 85221050, 69239300, 76415950, 0, 0], target: 90000000, sales2025: 890000000 },
-            { no: 35, store: "AGS VETERAN", openDate: "2021-10-03", sales2026: [80503950, 76159600, 125168150, 80442580, 84870500, 81393700, 82107035, 76735650, 71626450, 76391100, 0, 0], target: 85000000, sales2025: 820000000 },
-            { no: 36, store: "AGS DRIYOREJO", openDate: "2018-11-16", sales2026: [149262505, 126763000, 202172729, 160754275, 173256000, 160331541, 139796050, 146963520, 126437100, 131070500, 0, 0], target: 150000000, sales2025: 1500000000 },
-            { no: 37, store: "AGS SIDOARJO REWWIN", openDate: "2022-06-25", sales2026: [101870875, 92386025, 135612825, 121031325, 115400530, 115114350, 104503600, 103052035, 93148800, 108552761, 0, 0], target: 110000000, sales2025: 1080000000 },
-            { no: 38, store: "AGS TULANGAN / EX SUKODONO", openDate: "2022-10-29", sales2026: [75306050, 64798425, 96139625, 80837725, 80167800, 68643350, 63597500, 0, 31500000, 94421050, 0, 0], target: 80000000, sales2025: 750000000 },
-            { no: 39, store: "AGS KRIAN SIDOARJO", openDate: "2024-08-31", sales2026: [69059947, 58383125, 98534750, 70860125, 78608800, 71186650, 58571700, 59806450, 55499750, 0, 0, 0], target: 70000000, sales2025: 600000000 },
-            { no: 40, store: "AGS GRESIK CERME", openDate: "2023-11-18", sales2026: [68780825, 57774850, 104316100, 80252682, 89858550, 90983475, 84536200, 88704572, 76621100, 81948900, 0, 0], target: 85000000, sales2025: 800000000 },
-            { no: 41, store: "AGS BABAT GR", openDate: "2017-11-24", sales2026: [141714400, 122342800, 185727300, 138019175, 150817750, 153523500, 149366575, 146614300, 146629275, 155864175, 0, 0], target: 145000000, sales2025: 1480000000 },
-            { no: 42, store: "AGS KARANGGENENG", openDate: "2021-10-23", sales2026: [51346950, 46283950, 88175800, 50396900, 58149000, 67264600, 60608800, 21696300, 0, 0, 0, 0], target: 60000000, sales2025: 550000000 },
-            { no: 43, store: "AGS BANARAN", openDate: "2024-02-24", sales2026: [81457300, 65497800, 107406850, 77660100, 93558600, 93118100, 89151550, 87238100, 87586200, 90609550, 0, 0], target: 85000000, sales2025: 800000000 },
-            { no: 44, store: "AGS WIDANG", openDate: "2024-08-31", sales2026: [165370650, 135078300, 215060460, 85839650, 87829050, 91445200, 93026800, 90760600, 79255550, 102867050, 0, 0], target: 100000000, sales2025: 1100000000 },
-            { no: 45, store: "AGS TANGGULREJO", openDate: "2021-06-12", sales2026: [67955200, 135078300, 215060460, 156340925, 173889300, 176656675, 170001350, 165273550, 151873320, 165319050, 0, 0], target: 160000000, sales2025: 1550000000 },
-            { no: 46, store: "AGS SUKOHARJO", openDate: "2022-03-19", sales2026: [88331975, 87431925, 121769675, 94518625, 89502150, 88578700, 78780625, 85924150, 71113050, 80617025, 0, 0], target: 90000000, sales2025: 890000000 },
-            { no: 47, store: "AGS SEMANGGI", openDate: "2020-02-29", sales2026: [61927350, 66328178, 78005050, 63820550, 67310925, 63340175, 54321425, 51715725, 51269352, 63069625, 0, 0], target: 65000000, sales2025: 650000000 },
-            { no: 48, store: "AGS CEMANI", openDate: "2024-05-11", sales2026: [61505700, 60796400, 82997925, 68821600, 76337600, 72144500, 60771390, 69371400, 59108625, 71778125, 0, 0], target: 70000000, sales2025: 620000000 },
-            { no: 49, store: "AGS KARTASURA", openDate: "2022-03-26", sales2026: [57331025, 54129200, 75718500, 57004600, 63957352, 68011425, 49699875, 55915650, 46999375, 56639250, 0, 0], target: 60000000, sales2025: 590000000 },
-            { no: 50, store: "AGS MANGKUYUDAN", openDate: "2018-08-26", sales2026: [73575775, 6567925, 78018725, 68667825, 72097515, 71097600, 76530025, 77414200, 73810825, 77240900, 0, 0], target: 75000000, sales2025: 720000000 },
-            { no: 51, store: "AGS SRAGEN A YANI", openDate: "2017-11-09", sales2026: [152396425, 141681475, 222722675, 161429600, 164667673, 166487025, 143697175, 146034472, 137763775, 144725075, 0, 0], target: 150000000, sales2025: 1550000000 },
-            { no: 52, store: "AGS SRAGEN SETIA BUDI", openDate: "2020-01-04", sales2026: [67666300, 63738350, 92860900, 68415800, 74635875, 72336850, 69419625, 74756759, 66063850, 65936405, 0, 0], target: 70000000, sales2025: 710000000 },
-            { no: 53, store: "AGS GEMOLONG", openDate: "2023-08-12", sales2026: [71050150, 65849675, 106018725, 64275700, 79488649, 78275625, 73377375, 74886350, 62897500, 70930224, 0, 0], target: 75000000, sales2025: 730000000 },
-            { no: 54, store: "AGS ANDONG", openDate: "2020-03-14", sales2026: [79876275, 93158576, 165519200, 108548305, 116526651, 117035680, 99152075, 115754075, 111120610, 114018937, 0, 0], target: 110000000, sales2025: 1110000000 },
-            { no: 55, store: "AGS MOJOSONGO", openDate: "2024-06-01", sales2026: [46279050, 49489475, 72031975, 25497075, 0, 0, 0, 0, 0, 0, 0, 0], target: 60000000, sales2025: 500000000 }
+            { no: 1, store: "AGS NGANJUK", openDate: "2019-08-03", sales2026: [132194500, 102239975, 152965250, 128645537, 128944350, 137521256, 132919025, 141354275, 120853900, 138001388, 0, 0], target: 140000000, sales2025: 1506893471, target2027: 150000000 },
+            { no: 2, store: "AGS CARUBAN", openDate: "2019-06-26", sales2026: [168407600, 137585725, 214347025, 166247900, 177854350, 170447000, 171097375, 163746300, 140425050, 164808300, 0, 0], target: 180000000, sales2025: 2046109262, target2027: 190000000 },
+            { no: 3, store: "AGS KEDIRI BANDAR LOR", openDate: "2021-04-12", sales2026: [95754800, 77388390, 120997525, 105539511, 113282999, 122449375, 109919413, 99189300, 109790825, 113931745, 0, 0], target: 130000000, sales2025: 1109601843, target2027: 135000000 },
+            { no: 4, store: "AGS NGANJUK BREBEK", openDate: "2022-05-28", sales2026: [123551525, 113413725, 181119000, 121979700, 137880950, 152369950, 117841725, 134979346, 103951250, 120171125, 0, 0], target: 125000000, sales2025: 1493517527, target2027: 130000000 },
+            { no: 5, store: "AGS KEDIRI WONOASRI", openDate: "2022-05-21", sales2026: [108530305, 103430925, 158853427, 112570225, 105059200, 97541725, 93966625, 92223880, 86322365, 94821125, 0, 0], target: 125000000, sales2025: 1319153143, target2027: 130000000 },
+            { no: 6, store: "AGS NGANJUK A.YANI", openDate: "2023-04-03", sales2026: [96278100, 68122075, 111866150, 89993475, 80684750, 89413400, 83395025, 93168200, 78126200, 81855375, 0, 0], target: 125000000, sales2025: 1142422950, target2027: 120000000 },
+            { no: 7, store: "AGS BEGADUNG NGANJUK", openDate: "2024-09-29", sales2026: [114796900, 90583050, 132897925, 110498150, 120431575, 119566775, 113913875, 122622400, 109484350, 118744950, 0, 0], target: 115000000, sales2025: 850000000, target2027: 120000000 },
+            { no: 8, store: "AGS KERTOSONO", openDate: "2022-12-17", sales2026: [80926190, 71893625, 130527925, 82514650, 103081225, 92131150, 86021750, 92401525, 78435725, 82704200, 0, 0], target: 95000000, sales2025: 900000000, target2027: 95000000 },
+            { no: 9, store: "AGS AR SALEH", openDate: "2026-06-06", sales2026: [0, 0, 0, 0, 0, 77748125, 70292200, 80321050, 72666150, 108977625, 0, 0], target: 80000000, sales2025: 0, target2027: 85000000 },
+            { no: 10, store: "AGS PONOROGO", openDate: "2018-11-16", sales2026: [92656950, 86033975, 126195625, 97413725, 106700850, 111270450, 98754200, 96186000, 98645850, 89832150, 0, 0], target: 105000000, sales2025: 980000000, target2027: 110000000 },
+            { no: 11, store: "AGS MAGETAN JL. PANGLIMA SUDIRMAN", openDate: "2019-11-15", sales2026: [101089800, 87677850, 125029900, 101420825, 102379975, 95206600, 85271200, 90143400, 82803300, 115767900, 0, 0], target: 100000000, sales2025: 970000000, target2027: 105000000 },
+            { no: 12, store: "AGS MAGETAN MONGINSIDI", openDate: "2023-03-18", sales2026: [111622925, 92677850, 131526925, 101644500, 111113875, 111050450, 107278575, 108174100, 100026925, 117788975, 0, 0], target: 110000000, sales2025: 1050000000, target2027: 115000000 },
+            { no: 13, store: "AGS MADIUN MARHADI", openDate: "2023-07-08", sales2026: [97695675, 74774400, 107584400, 88651650, 92886751, 98295175, 86372825, 94700125, 87004750, 86882661, 0, 0], target: 95000000, sales2025: 900000000, target2027: 100000000 },
+            { no: 14, store: "AGS MAGETAN MT HARYONO", openDate: "2025-06-12", sales2026: [67483400, 67720805, 93677500, 75870395, 73910150, 78019900, 65983950, 72972700, 78198000, 93962850, 0, 0], target: 80000000, sales2025: 450000000, target2027: 85000000 },
+            { no: 15, store: "AGS MAGETAN TEMBORO", openDate: "2025-12-13", sales2026: [71312077, 74483070, 63301425, 105638375, 77987550, 83605325, 73872576, 78553500, 67417475, 71458700, 0, 0], target: 75000000, sales2025: 100000000, target2027: 80000000 },
+            { no: 16, store: "AGS BEJI TULUNGAGUNG", openDate: "2021-08-28", sales2026: [73034450, 69287450, 91419700, 81946650, 84604735, 85588600, 87693550, 91705325, 80786275, 77238225, 0, 0], target: 85000000, sales2025: 810000000, target2027: 90000000 },
+            { no: 17, store: "AGS NGUNUT TULUNGAGUNG", openDate: "2022-02-04", sales2026: [106562500, 93865475, 157265450, 108607625, 110102325, 104425825, 108686900, 112882650, 103747700, 111709700, 0, 0], target: 110000000, sales2025: 1100000000, target2027: 115000000 },
+            { no: 18, store: "AGS TEUKU UMAR / EX BAGO", openDate: "2022-05-14", sales2026: [98660825, 94366750, 129805500, 108495825, 59258025, 97675475, 89128950, 107357650, 108616650, 107911900, 0, 0], target: 105000000, sales2025: 990000000, target2027: 110000000 },
+            { no: 19, store: "AGS NGEMPLAK TULUNGAGUNG", openDate: "2025-05-23", sales2026: [63957050, 62114350, 93415375, 66133625, 37500225, 0, 0, 0, 0, 0, 0, 0], target: 75000000, sales2025: 200000000, target2027: 80000000 },
+            { no: 20, store: "AGS NGANTRU TULUNGAGUNG", openDate: "2025-02-22", sales2026: [75857350, 67080300, 111915525, 88108650, 94289950, 91535400, 89771200, 8878750, 86263975, 89529850, 0, 0], target: 90000000, sales2025: 400000000, target2027: 95000000 },
+            { no: 21, store: "AGS BLITAR PATOK", openDate: "2019-05-10", sales2026: [148794800, 139573150, 220502545, 157666891, 171553100, 156498950, 145893295, 156572575, 152765525, 161437650, 0, 0], target: 160000000, sales2025: 1580000000, target2027: 170000000 },
+            { no: 22, store: "AGS SAMBI KEDIRI", openDate: "2020-02-12", sales2026: [102283100, 94875450, 161729850, 103756250, 102531700, 111634050, 105921325, 114391775, 100358925, 105847725, 0, 0], target: 110000000, sales2025: 1080000000, target2027: 115000000 },
+            { no: 23, store: "AGS WATES KEDIRI", openDate: "2021-12-06", sales2026: [104752602, 94189175, 182126225, 103040620, 116481800, 123392600, 125745675, 132958000, 125009350, 127545075, 0, 0], target: 120000000, sales2025: 1200000000, target2027: 130000000 },
+            { no: 24, store: "AGS KEDIRI GURAH / EX DLOPO", openDate: "2021-11-09", sales2026: [87718175, 76379487, 117368500, 81649525, 92796575, 81552225, 80341075, 99497626, 37897700, 113639325, 0, 0], target: 90000000, sales2025: 850000000, target2027: 95000000 },
+            { no: 25, store: "AGS PARE SUDIRMAN", openDate: "2021-06-11", sales2026: [135142250, 125049800, 185774175, 128791825, 138303275, 138282850, 125776775, 143814700, 130038725, 127360225, 0, 0], target: 135000000, sales2025: 1350000000, target2027: 140000000 },
+            { no: 26, store: "AGS MOJO KEDIRI", openDate: "2022-03-26", sales2026: [137761675, 122619125, 182018250, 122162325, 146643975, 155057000, 143828620, 155797825, 151115650, 149902975, 0, 0], target: 140000000, sales2025: 1420000000, target2027: 150000000 },
+            { no: 27, store: "AGS MOJOSARI 21", openDate: "2020-07-03", sales2026: [102551100, 88466900, 134630200, 83893100, 86929150, 85293100, 78482400, 84208100, 65848700, 72479375, 0, 0], target: 95000000, sales2025: 900000000, target2027: 100000000 },
+            { no: 28, store: "AGS MOJOKERTO NGORO", openDate: "2021-09-25", sales2026: [100808450, 88800000, 123209800, 93475450, 109753775, 92873800, 85776050, 90306950, 84106325, 85489025, 0, 0], target: 95000000, sales2025: 930000000, target2027: 100000000 },
+            { no: 29, store: "AGS MOJOKERTO BASUNI", openDate: "2020-10-18", sales2026: [108413000, 89517074, 134539525, 101704450, 115331400, 111606025, 99109574, 95958300, 85392850, 90630274, 0, 0], target: 105000000, sales2025: 1010000000, target2027: 110000000 },
+            { no: 30, store: "AGS MOJOSARI PEMUDA", openDate: "2022-01-15", sales2026: [86922925, 73840250, 106601775, 66830225, 80601590, 76567450, 68692350, 79103250, 68696700, 66179275, 0, 0], target: 80000000, sales2025: 780000000, target2027: 85000000 },
+            { no: 31, store: "AGS MOJOKERTO MERI", openDate: "2022-03-19", sales2026: [82960850, 68972775, 104511475, 89358050, 92934974, 92704062, 89669775, 79660153, 69919858, 77231065, 0, 0], target: 85000000, sales2025: 830000000, target2027: 90000000 },
+            { no: 32, store: "AGS PACET", openDate: "2024-11-16", sales2026: [147697840, 118307550, 150016977, 155124545, 186173300, 164590819, 160117225, 159117750, 137771250, 159985225, 0, 0], target: 140000000, sales2025: 1100000000, target2027: 160000000 },
+            { no: 33, store: "AGS SUNAN DRAJAT", openDate: "2019-03-29", sales2026: [128528700, 125058100, 206870605, 143078731, 145814100, 147313800, 133665650, 140522950, 144522500, 138461150, 0, 0], target: 140000000, sales2025: 1420000000, target2027: 150000000 },
+            { no: 34, store: "AGS KARANGLANGIT", openDate: "2020-01-25", sales2026: [93681800, 83065450, 136328850, 86634950, 102723450, 88263800, 79116500, 85221050, 69239300, 76415950, 0, 0], target: 90000000, sales2025: 890000000, target2027: 95000000 },
+            { no: 35, store: "AGS VETERAN", openDate: "2021-10-03", sales2026: [80503950, 76159600, 125168150, 80442580, 84870500, 81393700, 82107035, 76735650, 71626450, 76391100, 0, 0], target: 85000000, sales2025: 820000000, target2027: 90000000 },
+            { no: 36, store: "AGS DRIYOREJO", openDate: "2018-11-16", sales2026: [149262505, 126763000, 202172729, 160754275, 173256000, 160331541, 139796050, 146963520, 126437100, 131070500, 0, 0], target: 150000000, sales2025: 1500000000, target2027: 160000000 },
+            { no: 37, store: "AGS SIDOARJO REWWIN", openDate: "2022-06-25", sales2026: [101870875, 92386025, 135612825, 121031325, 115400530, 115114350, 104503600, 103052035, 93148800, 108552761, 0, 0], target: 110000000, sales2025: 1080000000, target2027: 115000000 },
+            { no: 38, store: "AGS TULANGAN / EX SUKODONO", openDate: "2022-10-29", sales2026: [75306050, 64798425, 96139625, 80837725, 80167800, 68643350, 63597500, 0, 31500000, 94421050, 0, 0], target: 80000000, sales2025: 750000000, target2027: 85000000 },
+            { no: 39, store: "AGS KRIAN SIDOARJO", openDate: "2024-08-31", sales2026: [69059947, 58383125, 98534750, 70860125, 78608800, 71186650, 58571700, 59806450, 55499750, 0, 0, 0], target: 70000000, sales2025: 600000000, target2027: 75000000 },
+            { no: 40, store: "AGS GRESIK CERME", openDate: "2023-11-18", sales2026: [68780825, 57774850, 104316100, 80252682, 89858550, 90983475, 84536200, 88704572, 76621100, 81948900, 0, 0], target: 85000000, sales2025: 800000000, target2027: 90000000 },
+            { no: 41, store: "AGS BABAT GR", openDate: "2017-11-24", sales2026: [141714400, 122342800, 185727300, 138019175, 150817750, 153523500, 149366575, 146614300, 146629275, 155864175, 0, 0], target: 145000000, sales2025: 1480000000, target2027: 155000000 },
+            { no: 42, store: "AGS KARANGGENENG", openDate: "2021-10-23", sales2026: [51346950, 46283950, 88175800, 50396900, 58149000, 67264600, 60608800, 21696300, 0, 0, 0, 0], target: 60000000, sales2025: 550000000, target2027: 65000000 },
+            { no: 43, store: "AGS BANARAN", openDate: "2024-02-24", sales2026: [81457300, 65497800, 107406850, 77660100, 93558600, 93118100, 89151550, 87238100, 87586200, 90609550, 0, 0], target: 85000000, sales2025: 800000000, target2027: 90000000 },
+            { no: 44, store: "AGS WIDANG", openDate: "2024-08-31", sales2026: [165370650, 135078300, 215060460, 85839650, 87829050, 91445200, 93026800, 90760600, 79255550, 102867050, 0, 0], target: 100000000, sales2025: 1100000000, target2027: 110000000 },
+            { no: 45, store: "AGS TANGGULREJO", openDate: "2021-06-12", sales2026: [67955200, 135078300, 215060460, 156340925, 173889300, 176656675, 170001350, 165273550, 151873320, 165319050, 0, 0], target: 160000000, sales2025: 1550000000, target2027: 170000000 },
+            { no: 46, store: "AGS SUKOHARJO", openDate: "2022-03-19", sales2026: [88331975, 87431925, 121769675, 94518625, 89502150, 88578700, 78780625, 85924150, 71113050, 80617025, 0, 0], target: 90000000, sales2025: 890000000, target2027: 95000000 },
+            { no: 47, store: "AGS SEMANGGI", openDate: "2020-02-29", sales2026: [61927350, 66328178, 78005050, 63820550, 67310925, 63340175, 54321425, 51715725, 51269352, 63069625, 0, 0], target: 65000000, sales2025: 650000000, target2027: 70000000 },
+            { no: 48, store: "AGS CEMANI", openDate: "2024-05-11", sales2026: [61505700, 60796400, 82997925, 68821600, 76337600, 72144500, 60771390, 69371400, 59108625, 71778125, 0, 0], target: 70000000, sales2025: 620000000, target2027: 75000000 },
+            { no: 49, store: "AGS KARTASURA", openDate: "2022-03-26", sales2026: [57331025, 54129200, 75718500, 57004600, 63957352, 68011425, 49699875, 55915650, 46999375, 56639250, 0, 0], target: 60000000, sales2025: 590000000, target2027: 65000000 },
+            { no: 50, store: "AGS MANGKUYUDAN", openDate: "2018-08-26", sales2026: [73575775, 6567925, 78018725, 68667825, 72097515, 71097600, 76530025, 77414200, 73810825, 77240900, 0, 0], target: 75000000, sales2025: 720000000, target2027: 80000000 },
+            { no: 51, store: "AGS SRAGEN A YANI", openDate: "2017-11-09", sales2026: [152396425, 141681475, 222722675, 161429600, 164667673, 166487025, 143697175, 146034472, 137763775, 144725075, 0, 0], target: 150000000, sales2025: 1550000000, target2027: 160000000 },
+            { no: 52, store: "AGS SRAGEN SETIA BUDI", openDate: "2020-01-04", sales2026: [67666300, 63738350, 92860900, 68415800, 74635875, 72336850, 69419625, 74756759, 66063850, 65936405, 0, 0], target: 70000000, sales2025: 710000000, target2027: 75000000 },
+            { no: 53, store: "AGS GEMOLONG", openDate: "2023-08-12", sales2026: [71050150, 65849675, 106018725, 64275700, 79488649, 78275625, 73377375, 74886350, 62897500, 70930224, 0, 0], target: 75000000, sales2025: 730000000, target2027: 80000000 },
+            { no: 54, store: "AGS ANDONG", openDate: "2020-03-14", sales2026: [79876275, 93158576, 165519200, 108548305, 116526651, 117035680, 99152075, 115754075, 111120610, 114018937, 0, 0], target: 110000000, sales2025: 1110000000, target2027: 120000000 },
+            { no: 55, store: "AGS MOJOSONGO", openDate: "2024-06-01", sales2026: [46279050, 49489475, 72031975, 25497075, 0, 0, 0, 0, 0, 0, 0, 0], target: 60000000, sales2025: 500000000, target2027: 65000000 }
         ];
 
         let storeDetailChartInstance = null;
         let regionalTrendChartInstance = null;
+
+        // Fungsi Sinkronisasi ke Google Sheet Web App
+        async function syncToGoogleSheet(actionType, payloadData) {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.innerText = "Syncing...";
+            statusEl.className = "inline-block px-2 py-0.5 bg-amber-500/25 text-amber-300 text-[10px] font-bold rounded animate-pulse";
+            
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: actionType, data: payloadData, timestamp: new Date().toISOString() })
+                });
+                statusEl.innerText = "Cloud Connected";
+                statusEl.className = "inline-block px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[10px] font-bold rounded";
+            } catch (error) {
+                console.error("Gagal sinkronisasi ke Google Sheet:", error);
+                statusEl.innerText = "Sync Error";
+                statusEl.className = "inline-block px-2 py-0.5 bg-red-500/20 text-red-400 text-[10px] font-bold rounded";
+            }
+        }
 
         // Login Handler
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -356,17 +426,19 @@
 
         // Tab Switching
         function switchTab(tabId) {
-            document.getElementById('tabSales').classList.add('hidden');
-            document.getElementById('tabVs2025').classList.add('hidden');
-            document.getElementById('tabAnalysis').classList.add('hidden');
-
-            document.getElementById('btnTabSales').className = "px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap";
-            document.getElementById('btnTabVs2025').className = "px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap";
-            document.getElementById('btnTabAnalysis').className = "px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap";
+            ['tabSales', 'tabVs2025', 'tabTarget2027', 'tabAnalysis'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            ['btnTabSales', 'btnTabVs2025', 'btnTabTarget2027', 'btnTabAnalysis'].forEach(id => {
+                document.getElementById(id).className = "px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap";
+            });
 
             document.getElementById(tabId).classList.remove('hidden');
-            event.currentTarget.className = "px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap shadow";
+            event.currentTarget.className = "px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-bold transition flex items-center gap-2 whitespace-nowrap shadow";
 
+            if(tabId === 'tabTarget2027') {
+                renderTarget2027Table();
+            }
             if(tabId === 'tabAnalysis') {
                 renderRegionalTrendChart();
             }
@@ -376,6 +448,7 @@
             populateStoreDropdowns();
             renderSalesData();
             renderVsData();
+            renderTarget2027Table();
         }
 
         function populateStoreDropdowns() {
@@ -390,7 +463,7 @@
             updateStoreChart();
         }
 
-        // Render Sales Data & Table
+        // Render Sales Data & Table (Tab 1)
         function renderSalesData() {
             const monthFilter = document.getElementById('filterMonth').value;
             const tbody = document.getElementById('storesTableBody');
@@ -401,7 +474,7 @@
 
             storeDatabase.forEach((s, idx) => {
                 let salesVal = 0;
-                let targetVal = s.target * (monthFilter === 'ALL' ? 10 : 1); // 10 active months Jan-Oct
+                let targetVal = s.target * (monthFilter === 'ALL' ? 12 : 1);
 
                 if(monthFilter === 'ALL') {
                     salesVal = s.sales2026.reduce((a, b) => a + b, 0);
@@ -415,41 +488,67 @@
 
                 const ach = targetVal > 0 ? (salesVal / targetVal) * 100 : 0;
                 
-                // Status check for Nov/Dec
-                let statusBadge = '';
-                if(monthFilter === '10' || monthFilter === '11') {
-                    statusBadge = `<span class="px-2 py-1 bg-amber-100 text-amber-800 rounded font-semibold text-[10px]">Belum Waktunya</span>`;
-                } else if(ach >= 100) {
-                    statusBadge = `<span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded font-semibold text-[10px]">Target Tercapai</span>`;
-                } else if(ach >= 80) {
-                    statusBadge = `<span class="px-2 py-1 bg-blue-100 text-blue-800 rounded font-semibold text-[10px]">On Track</span>`;
-                } else {
-                    statusBadge = `<span class="px-2 py-1 bg-red-100 text-red-800 rounded font-semibold text-[10px]">Perlu Boost</span>`;
-                }
-
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition cursor-pointer";
-                tr.onclick = () => {
-                    document.getElementById('selectStoreChart').value = idx;
-                    updateStoreChart();
-                };
+                tr.className = "hover:bg-slate-50 transition";
                 tr.innerHTML = `
-                    <td class="p-3 text-center font-bold text-slate-500">${s.no}</td>
-                    <td class="p-3 font-bold text-slate-900">${s.store}</td>
+                    <td class="p-3 text-center font-bold text-slate-500 cursor-pointer" onclick="selectStoreForChart(${idx})">${s.no}</td>
+                    <td class="p-3 font-bold text-slate-900 cursor-pointer" onclick="selectStoreForChart(${idx})">${s.store}</td>
                     <td class="p-3 text-slate-600">${s.openDate}</td>
                     <td class="p-3 text-right font-semibold text-slate-900">Rp ${salesVal.toLocaleString('id-ID')}</td>
                     <td class="p-3 text-right font-semibold text-slate-600">Rp ${targetVal.toLocaleString('id-ID')}</td>
                     <td class="p-3 text-center font-black ${ach >= 100 ? 'text-emerald-600' : 'text-red-600'}">${ach.toFixed(1)}%</td>
-                    <td class="p-3 text-center">${statusBadge}</td>
+                    <td class="p-3 text-center space-x-1">
+                        <button onclick="openModal(${idx}, 10)" class="px-2.5 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded text-[11px] font-bold" title="Input Nov">Nov: Rp ${(s.sales2026[10]/1000000).toFixed(0)}jt</button>
+                        <button onclick="openModal(${idx}, 11)" class="px-2.5 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded text-[11px] font-bold" title="Input Des">Des: Rp ${(s.sales2026[11]/1000000).toFixed(0)}jt</button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
 
-            // Update Summary Cards
             document.getElementById('sumTotalSales').innerText = `Rp ${totalSalesSum.toLocaleString('id-ID')}`;
             document.getElementById('sumTotalTarget').innerText = `Rp ${totalTargetSum.toLocaleString('id-ID')}`;
             const overallAch = totalTargetSum > 0 ? (totalSalesSum / totalTargetSum) * 100 : 0;
             document.getElementById('sumTotalAch').innerText = `${overallAch.toFixed(1)}%`;
+        }
+
+        function selectStoreForChart(idx) {
+            document.getElementById('selectStoreChart').value = idx;
+            updateStoreChart();
+        }
+
+        // Modal Handler for Nov / Dec input
+        function openModal(storeIdx, monthIdx) {
+            const s = storeDatabase[storeIdx];
+            document.getElementById('modalStoreIdx').value = storeIdx;
+            document.getElementById('modalMonthType').value = monthIdx;
+            document.getElementById('modalStoreTitle').innerText = `Input Sales ${monthIdx === 10 ? 'November' : 'Desember'} 2026: ${s.store}`;
+            document.getElementById('modalInputVal').value = s.sales2026[monthIdx];
+            document.getElementById('modalEditMonth').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modalEditMonth').classList.add('hidden');
+        }
+
+        function saveModalVal() {
+            const storeIdx = parseInt(document.getElementById('modalStoreIdx').value);
+            const monthIdx = parseInt(document.getElementById('modalMonthType').value);
+            const val = parseFloat(document.getElementById('modalInputVal').value) || 0;
+            
+            storeDatabase[storeIdx].sales2026[monthIdx] = val;
+            closeModal();
+            renderSalesData();
+            renderVsData();
+            renderTarget2027Table();
+            updateStoreChart();
+
+            // Sinkronisasi otomatis ke Google Sheet via Web App
+            syncToGoogleSheet('saveSales', {
+                store: storeDatabase[storeIdx].store,
+                month: monthIdx === 10 ? 'November' : 'Desember',
+                sales: val,
+                allSales: storeDatabase[storeIdx].sales2026
+            });
         }
 
         // Update Store Detail Chart
@@ -490,12 +589,8 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { y: { beginAtZero: true } }
                 }
             });
         }
@@ -534,7 +629,49 @@
             });
         }
 
-        // Render Regional Trend Chart (Tab 3)
+        // Render Target 2027 & Acuan VS 2026 (Tab 3)
+        function renderTarget2027Table() {
+            const tbody = document.getElementById('target2027TableBody');
+            tbody.innerHTML = '';
+
+            storeDatabase.forEach((s, idx) => {
+                const totalReal2026 = s.sales2026.reduce((a, b) => a + b, 0);
+                const target2027 = s.target2027 || s.target * 12;
+                const diff = target2027 - totalReal2026;
+                const growth = totalReal2026 > 0 ? (diff / totalReal2026) * 100 : 0;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 text-center font-bold text-slate-500">${s.no}</td>
+                    <td class="p-3 font-bold text-slate-900">${s.store}</td>
+                    <td class="p-3 text-right font-semibold text-slate-600">Rp ${totalReal2026.toLocaleString('id-ID')}</td>
+                    <td class="p-3 text-right">
+                        <input type="number" id="target2027_${idx}" value="${s.target2027 || s.target * 12}" class="w-36 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded text-xs font-bold focus:ring-2 focus:ring-red-500">
+                    </td>
+                    <td class="p-3 text-center font-bold text-emerald-600">+${growth.toFixed(1)}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function saveTarget2027() {
+            const targetsToSave = [];
+            storeDatabase.forEach((s, idx) => {
+                const inputVal = document.getElementById(`target2027_${idx}`);
+                if(inputVal) {
+                    s.target2027 = parseFloat(inputVal.value) || s.target * 12;
+                    targetsToSave.push({ store: s.store, target2027: s.target2027 });
+                }
+            });
+            
+            // Kirim ke Google Sheet
+            syncToGoogleSheet('saveTarget2027', targetsToSave);
+            alert('Target tahun 2027 berhasil disimpan dan disinkronkan ke Google Sheet!');
+            renderTarget2027Table();
+        }
+
+        // Render Regional Trend Chart (Tab 4)
         function renderRegionalTrendChart() {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
             const monthlyTotals = months.map((_, mIdx) => {
@@ -549,7 +686,7 @@
                 data: {
                     labels: months,
                     datasets: [{
-                        label: 'Total Sales Regional 2026 (Rp)',
+                        label: 'Total Sales Regional Timur 2 (Rp)',
                         data: monthlyTotals,
                         borderColor: '#dc2626',
                         backgroundColor: 'rgba(220, 38, 38, 0.1)',
@@ -563,12 +700,8 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { y: { beginAtZero: true } }
                 }
             });
         }
