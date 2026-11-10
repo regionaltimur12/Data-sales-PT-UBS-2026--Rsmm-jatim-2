@@ -272,8 +272,8 @@
             <!-- TAB 4: GRAFIK & ANALISA AKHIR -->
             <div id="tabAnalysis" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6">
-                    <h3 class="font-bold text-slate-900 text-base mb-1"><i class="fa-solid fa-chart-area text-red-600 mr-2"></i>Grafik Tren & Target Kumulatif Regional Timur 2 (2026)</h3>
-                    <p class="text-xs text-slate-500 mb-4">Perbandingan garis kumulatif Sales Aktual vs Target Kumulatif Regional dari Januari sampai Desember 2026.</p>
+                    <h3 class="font-bold text-slate-900 text-base mb-1"><i class="fa-solid fa-chart-area text-red-600 mr-2"></i>Grafik Tren Konsolidasi Regional Timur 2 (2026)</h3>
+                    <p class="text-xs text-slate-500 mb-4">Grafik kumulatif pencapaian sales seluruh store dari Januari sampai Desember 2026.</p>
                     <div class="relative h-80 w-full">
                         <canvas id="regionalTrendChart"></canvas>
                     </div>
@@ -469,6 +469,7 @@
             updateStoreChart();
         }
 
+        // Render Sales Data & Table with Sorting Feature
         function renderSalesData() {
             const monthFilter = document.getElementById('filterMonth').value;
             const sortBy = document.getElementById('sortBy').value;
@@ -478,6 +479,7 @@
             let totalSalesSum = 0;
             let totalTargetSum = 0;
 
+            // Map data with calculated sales, target & achievement for sorting
             let processedStores = storeDatabase.map((s, idx) => {
                 let salesVal = 0;
                 let targetVal = 0;
@@ -494,6 +496,7 @@
                 return { s, idx, salesVal, targetVal, ach };
             });
 
+            // Sorting logic
             if(sortBy === 'salesHigh') {
                 processedStores.sort((a, b) => b.salesVal - a.salesVal);
             } else if(sortBy === 'targetHigh') {
@@ -695,25 +698,10 @@
             renderTarget2027Table();
         }
 
-        // Render Regional Trend & Cumulative Target Chart (Tab 4)
         function renderRegionalTrendChart() {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
-            
-            let cumulativeSales = 0;
-            let cumulativeTarget = 0;
-
-            const salesCumulativeData = [];
-            const targetCumulativeData = [];
-
-            months.forEach((_, mIdx) => {
-                const monthlySalesSum = storeDatabase.reduce((sum, s) => sum + (s.sales2026[mIdx] || 0), 0);
-                const monthlyTargetSum = storeDatabase.reduce((sum, s) => sum + (s.targets2026[mIdx] || 0), 0);
-
-                cumulativeSales += monthlySalesSum;
-                cumulativeTarget += monthlyTargetSum;
-
-                salesCumulativeData.push(cumulativeSales);
-                targetCumulativeData.push(cumulativeTarget);
+            const monthlyTotals = months.map((_, mIdx) => {
+                return storeDatabase.reduce((sum, s) => sum + s.sales2026[mIdx], 0);
             });
 
             const ctx = document.getElementById('regionalTrendChart').getContext('2d');
@@ -723,31 +711,17 @@
                 type: 'line',
                 data: {
                     labels: months,
-                    datasets: [
-                        {
-                            label: 'Kumulatif Sales Aktual (Rp)',
-                            data: salesCumulativeData,
-                            borderColor: '#dc2626',
-                            backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.3,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#991b1b'
-                        },
-                        {
-                            label: 'Kumulatif Target Regional (Rp)',
-                            data: targetCumulativeData,
-                            borderColor: '#f59e0b',
-                            backgroundColor: 'rgba(245, 158, 11, 0.05)',
-                            borderWidth: 3,
-                            borderDash: [5, 5],
-                            fill: false,
-                            tension: 0.3,
-                            pointRadius: 4,
-                            pointBackgroundColor: '#d97706'
-                        }
-                    ]
+                    datasets: [{
+                        label: 'Total Sales Regional Timur 2 (Rp)',
+                        data: monthlyTotals,
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#991b1b'
+                    }]
                 },
                 options: {
                     responsive: true,
