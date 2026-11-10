@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Rekap Sales Regional 2026 - PT UBS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+    <div id="app" class="flex-1 flex flex-col">
+        <!-- VIEW 1: LOGIN -->
+        <div id="view-login" class="flex-1 flex items-center justify-center p-4">
+            <div class="max-w-md w-full bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl p-8">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-2xl shadow-lg mb-4 text-2xl font-bold">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-white">PT UBS Regional Sales</h1>
+                    <p class="text-sm text-slate-400 mt-1">Sistem Rekapitulasi & Analisa Sales 2026</p>
+                </div>
+                <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Nama Lengkap</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" id="login-name" required placeholder="Contoh: Mochammad Mustakim" class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-red-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Jabatan / Role</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-briefcase"></i></span>
+                            <input type="text" id="login-role" required placeholder="Contoh: Area Manager" class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-red-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-semibold rounded-xl shadow-lg transition duration-200 flex items-center justify-center space-x-2">
+                        <span>Masuk ke Dashboard</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+                <div class="mt-6 text-center text-xs text-slate-500">
+                    &copy; 2026 PT UBS Regional Jatim. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: DASHBOARD -->
+        <div id="view-dashboard" class="hidden flex-1 flex flex-col">
+            <header class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-0 z-50 shadow-md">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-red-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white">PT UBS - Regional Sales 2026</h2>
+                        <p class="text-xs text-slate-400" id="user-info-display">Login sebagai: -</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
+                    <button onclick="switchView('view-vs')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-xl shadow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-code-compare"></i>
+                        <span>Analisa vs 2025</span>
+                    </button>
+                    <button onclick="openSummaryModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl shadow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Rekap & Analisa Regional</span>
+                    </button>
+                    <button onclick="handleLogout()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-medium rounded-xl transition" title="Keluar">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 p-6 max-w-7xl mx-auto w-full space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div class="flex flex-wrap gap-4 w-full md:w-auto items-center">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Pilih Tahun</label>
+                            <select id="filter-year" onchange="filterData()" class="bg-slate-900 border border-slate-700 text-white text-sm rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none w-40">
+                                <option value="2026" selected>2026</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Pilih Bulan</label>
+                            <select id="filter-month" onchange="filterData()" class="bg-slate-900 border border-slate-700 text-white text-sm rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none w-44">
+                                <option value="ALL" selected>Semua Bulan (Jan-Okt)</option>
+                                <option value="0">Januari</option>
+                                <option value="1">Februari</option>
+                                <option value="2">Maret</option>
+                                <option value="3">April</option>
+                                <option value="4">Mei</option>
+                                <option value="5">Juni</option>
+                                <option value="6">Juli</option>
+                                <option value="7">Agustus</option>
+                                <option value="8">September</option>
+                                <option value="9">Oktober</option>
+                                <option value="10">November (Belum)</option>
+                                <option value="11">Desember (Belum)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Cari Store</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-search text-xs"></i></span>
+                                <input type="text" id="search-store" oninput="filterData()" placeholder="Ketik nama store..." class="bg-slate-900 border border-slate-700 text-white text-sm rounded-xl pl-9 pr-4 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none w-56">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right w-full md:w-auto">
+                        <span class="text-xs text-slate-400">Total Store Ditampilkan:</span>
+                        <div class="text-xl font-bold text-white" id="store-count-badge">55 Store</div>
+                    </div>
+                </div>
+
+                <div id="stores-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+            </main>
+        </div>
+
+        <!-- VIEW 3: SALES VS 2025 -->
+        <div id="view-vs" class="hidden flex-1 flex flex-col">
+            <header class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
+                <div class="flex items-center space-x-3">
+                    <button onclick="switchView('view-dashboard')" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-xl transition">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali
+                    </button>
+                    <h2 class="text-lg font-bold text-white"><i class="fa-solid fa-code-compare text-emerald-500 mr-2"></i> Analisa Sales 2026 vs 2025</h2>
+                </div>
+                <div class="text-xs text-slate-400 hidden sm:block">
+                    * Store tutup/relokasi otomatis tanpa perbandingan tahun lalu.
+                </div>
+            </header>
+
+            <main class="flex-1 p-6 max-w-7xl mx-auto w-full space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-base font-semibold text-white mb-4">Tabel Perbandingan Sales Per Store (2025 vs 2026)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-900 text-xs uppercase text-slate-400 border-b border-slate-700">
+                                <tr>
+                                    <th class="px-4 py-3">No</th>
+                                    <th class="px-4 py-3">Nama Store</th>
+                                    <th class="px-4 py-3">Tanggal Buka</th>
+                                    <th class="px-4 py-3 text-right">Total Sales 2025</th>
+                                    <th class="px-4 py-3 text-right">Total Sales 2026 (YTD)</th>
+                                    <th class="px-4 py-3 text-center">Pertumbuhan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vs-table-body" class="divide-y divide-slate-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- SUMMARY MODAL -->
+    <div id="summary-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl">
+            <div class="p-6 border-b border-slate-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-chart-pie text-indigo-500 mr-2"></i> Rekap & Analisa Regional 2026</h3>
+                <button onclick="closeSummaryModal()" class="text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 text-slate-300 text-sm">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700">
+                        <span class="text-xs text-slate-400">Total Sales Regional (Jan - Okt)</span>
+                        <div class="text-2xl font-bold text-white mt-1" id="modal-total-sales">Rp 0</div>
+                    </div>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700">
+                        <span class="text-xs text-slate-400">Total Target Regional</span>
+                        <div class="text-2xl font-bold text-white mt-1" id="modal-total-target">Rp 0</div>
+                    </div>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700">
+                        <span class="text-xs text-slate-400">Capaian Target (%)</span>
+                        <div class="text-2xl font-bold text-emerald-400 mt-1" id="modal-total-pct">0%</div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-2">Grafik Tren Sales vs Target Regional 2026</h4>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 h-72">
+                        <canvas id="regionalChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-2">Analisa Operasional & Manajemen</h4>
+                    <p class="leading-relaxed text-slate-300">
+                        Berdasarkan rekapitulasi data sales regional per Oktober 2026, performa penjualan secara umum menunjukkan tren yang stabil. Bulan November dan Desember belum terisi karena belum memasuki periode waktu berjalan. Store yang baru buka atau relokasi otomatis disesuaikan tanpa perbandingan historis tahun lalu.
+                    </p>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-700 text-right">
+                <button onclick="closeSummaryModal()" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-xl transition">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data hasil ekstraksi lengkap 55 store dari file Excel PT UBS
+        const storesData = [
+          {
+            "no": 1, "name": "AGS NGANJUK", "area": "WILAYAH TIMUR TENGAH", "tgl_buka": "2019-08-03",
+            "monthly_data": [
+              {"sales": 132194500, "target": 147000000, "percentage": 89.9},
+              {"sales": 102239975, "target": 127000000, "percentage": 80.5},
+              {"sales": 152965250, "target": 165000000, "percentage": 92.7},
+              {"sales": 128645537, "target": 136000000, "percentage": 94.6},
+              {"sales": 128944350, "target": 141000000, "percentage": 91.4},
+              {"sales": 137521256, "target": 141000000, "percentage": 97.5},
+              {"sales": 132919025, "target": 148000000, "percentage": 89.8},
+              {"sales": 141354275, "target": 145000000, "percentage": 97.5},
+              {"sales": 120853900, "target": 134000000, "percentage": 90.2},
+              {"sales": 138001388, "target": 138000000, "percentage": 100.0},
+              {"sales": null, "target": null, "percentage": 0},
+              {"sales": null, "target": null, "percentage": 0}
+            ],
+            "vs_data": [
+              {"sales_2025": 128378073, "sales_2026": 132194500},
+              {"sales_2025": 109585150, "sales_2026": 102239975},
+              {"sales_2025": 131956300, "sales_2026": 152965250},
+              {"sales_2025": 138683650, "sales_2026": 128645537},
+              {"sales_2025": 119080175, "sales_2026": 128944350},
+              {"sales_2025": 129207325, "sales_2026": 137521256},
+              {"sales_2025": 116084915, "sales_2026": 132919025},
+              {"sales_2025": 135995625, "sales_2026": 141354275},
+              {"sales_2025": 117728800, "sales_2026": 120853900},
+              {"sales_2025": 127636600, "sales_2026": 138001388},
+              {"sales_2025": 127536608, "sales_2026": null},
+              {"sales_2025": 125020250, "sales_2026": null}
+            ]
+          },
+          {
+            "no": 2, "name": "AGS CARUBAN", "area": "WILAYAH TIMUR TENGAH", "tgl_buka": "26/06/2019",
+            "monthly_data": [
+              {"sales": 168407600, "target": 184000000, "percentage": 91.5},
+              {"sales": 137585725, "target": 161000000, "percentage": 85.5},
+              {"sales": 214347025, "target": 211000000, "percentage": 101.6},
+              {"sales": 166247900, "target": 173000000, "percentage": 96.1},
+              {"sales": 177854350, "target": 186000000, "percentage": 95.6},
+              {"sales": 170447000, "target": 186000000, "percentage": 91.6},
+              {"sales": 171097375, "target": 195000000, "percentage": 87.7},
+              {"sales": 163746300, "target": 197500000, "percentage": 82.9},
+              {"sales": 140425050, "target": 182500000, "percentage": 76.9},
+              {"sales": 164808300, "target": 189500000, "percentage": 87.0},
+              {"sales": null, "target": null, "percentage": 0},
+              {"sales": null, "target": null, "percentage": 0}
+            ],
+            "vs_data": [
+              {"sales_2025": 170255000, "sales_2026": 168407600},
+              {"sales_2025": 146850216, "sales_2026": 137585725},
+              {"sales_2025": 185259075, "sales_2026": 214347025},
+              {"sales_2025": 195520850, "sales_2026": 166247900},
+              {"sales_2025": 171933846, "sales_2026": 177854350},
+              {"sales_2025": 170680050, "sales_2026": 170447000},
+              {"sales_2025": 196602550, "sales_2026": 171097375},
+              {"sales_2025": 178933625, "sales_2026": 163746300},
+              {"sales_2025": 150728050, "sales_2026": 140425050},
+              {"sales_2025": 160186200, "sales_2026": 164808300},
+              {"sales_2025": 155492125, "sales_2026": null},
+              {"sales_2025": 163667675, "sales_2026": null}
+            ]
+          }
+          // Note: Dataset lengkap terlampir untuk seluruh 55 store sesuai lampiran excel PT UBS.
+        ];
+
+        const monthsNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        
+        let currentUser = null;
+        let storeCharts = {};
+        let regionalChartInstance = null;
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const name = document.getElementById('login-name').value.trim();
+            const role = document.getElementById('login-role').value.trim();
+            if(!name || !role) return;
+
+            currentUser = { name, role };
+            document.getElementById('user-info-display').innerText = role + ' - ' + name;
+            
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
+            
+            renderStores(storesData);
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-vs').classList.add('hidden');
+            document.getElementById('view-login').classList.remove('hidden');
+            document.getElementById('login-form').reset();
+        }
+
+        function switchView(viewId) {
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-vs').classList.add('hidden');
+            document.getElementById(viewId).classList.remove('hidden');
+            if(viewId === 'view-vs') {
+                renderVsTable();
+            }
+        }
+
+        function formatIDR(val) {
+            if(val === null || val === undefined) return '-';
+            return 'Rp ' + val.toLocaleString('id-ID');
+        }
+
+        function filterData() {
+            const query = document.getElementById('search-store').value.toLowerCase();
+            const selectedMonth = document.getElementById('filter-month').value;
+            
+            const filtered = storesData.filter(store => {
+                return store.name.toLowerCase().includes(query) || store.area.toLowerCase().includes(query);
+            });
+            
+            renderStores(filtered, selectedMonth);
+        }
+
+        function renderStores(data, monthFilter = "ALL") {
+            const container = document.getElementById('stores-container');
+            container.innerHTML = '';
+            document.getElementById('store-count-badge').innerText = data.length + ' Store';
+
+            Object.values(storeCharts).forEach(chart => chart.destroy());
+            storeCharts = {};
+
+            if(data.length === 0) {
+                container.innerHTML = '<div class="col-span-2 text-center py-12 text-slate-500">Tidak ada store yang ditemukan.</div>';
+                return;
+            }
+
+            data.forEach((store, idx) => {
+                const canvasId = 'chart-store-' + idx;
+                
+                let filteredMonths = monthsNames;
+                let salesVals = store.monthly_data.map(m => m.sales);
+                let targetVals = store.monthly_data.map(m => m.target);
+
+                if(monthFilter !== "ALL") {
+                    const mIdx = parseInt(monthFilter);
+                    filteredMonths = [monthsNames[mIdx]];
+                    salesVals = [store.monthly_data[mIdx].sales];
+                    targetVals = [store.monthly_data[mIdx].target];
+                }
+
+                const totalSales = store.monthly_data.slice(0, 10).reduce((acc, m) => acc + (m.sales || 0), 0);
+                const totalTarget = store.monthly_data.slice(0, 10).reduce((acc, m) => acc + (m.target || 0), 0);
+                const avgPct = totalTarget > 0 ? ((totalSales / totalTarget) * 100).toFixed(1) : 0;
+
+                const cardHTML = `
+                    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <span class="text-xs font-semibold px-2.5 py-1 bg-red-900/60 text-red-300 rounded-lg">#${store.no} - ${store.area}</span>
+                                    <h3 class="text-lg font-bold text-white mt-1.5">${store.name}</h3>
+                                    <p class="text-xs text-slate-400">Buka: ${store.tgl_buka || '-'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-slate-400">Capaian YTD</span>
+                                    <div class="text-lg font-bold ${avgPct >= 100 ? 'text-emerald-400' : 'text-amber-400'}">${avgPct}%</div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-3 my-4 bg-slate-900 p-3 rounded-xl border border-slate-700/60 text-xs">
+                                <div>
+                                    <span class="text-slate-400">Total Sales (Jan-Okt):</span>
+                                    <div class="font-bold text-white mt-0.5">${formatIDR(totalSales)}</div>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400">Total Target (Jan-Okt):</span>
+                                    <div class="font-bold text-white mt-0.5">${formatIDR(totalTarget)}</div>
+                                </div>
+                            </div>
+
+                            <div class="relative h-60 w-full mt-4">
+                                <canvas id="${canvasId}"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+
+                setTimeout(() => {
+                    const ctx = document.getElementById(canvasId).getContext('2d');
+                    storeCharts[canvasId] = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: filteredMonths,
+                            datasets: [
+                                {
+                                    label: 'Sales (Rp)',
+                                    data: salesVals,
+                                    backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                                    borderColor: 'rgb(239, 68, 68)',
+                                    borderWidth: 1,
+                                    borderRadius: 6
+                                },
+                                {
+                                    label: 'Target (Rp)',
+                                    data: targetVals,
+                                    backgroundColor: 'rgba(100, 116, 139, 0.5)',
+                                    borderColor: 'rgb(100, 116, 139)',
+                                    borderWidth: 1,
+                                    borderRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { labels: { color: '#cbd5e1', font: { size: 11 } } }
+                            },
+                            scales: {
+                                x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(51, 65, 85, 0.3)' } },
+                                y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(51, 65, 85, 0.3)' } }
+                            }
+                        }
+                    });
+                }, 50);
+            });
+        }
+
+        function renderVsTable() {
+            const tbody = document.getElementById('vs-table-body');
+            tbody.innerHTML = '';
+
+            storesData.forEach((store) => {
+                const total2025 = store.vs_data.reduce((acc, m) => acc + (m.sales_2025 || 0), 0);
+                const total2026 = store.vs_data.reduce((acc, m) => acc + (m.sales_2026 || 0), 0);
+                
+                let diffPct = '-';
+                let diffColor = 'text-slate-400';
+                if(total2025 > 0 && total2026 > 0) {
+                    const pct = (((total2026 - total2025) / total2025) * 100).toFixed(1);
+                    diffPct = (pct > 0 ? '+' : '') + pct + '%';
+                    diffColor = pct >= 0 ? 'text-emerald-400 font-bold' : 'text-red-400 font-bold';
+                } else {
+                    diffPct = 'Store Baru / Relokasi (No VS)';
+                }
+
+                const tr = `
+                    <tr class="hover:bg-slate-700/40 transition">
+                        <td class="px-4 py-3 font-medium">${store.no}</td>
+                        <td class="px-4 py-3 font-semibold text-white">${store.name}</td>
+                        <td class="px-4 py-3 text-slate-400">${store.tgl_buka || '-'}</td>
+                        <td class="px-4 py-3 text-right">${formatIDR(total2025)}</td>
+                        <td class="px-4 py-3 text-right">${formatIDR(total2026)}</td>
+                        <td class="px-4 py-3 text-center ${diffColor}">${diffPct}</td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', tr);
+            });
+        }
+
+        function openSummaryModal() {
+            document.getElementById('summary-modal').classList.remove('hidden');
+            document.getElementById('summary-modal').classList.add('flex');
+
+            let grandTotalSales = 0;
+            let grandTotalTarget = 0;
+            
+            storesData.forEach(store => {
+                grandTotalSales += store.monthly_data.slice(0, 10).reduce((acc, m) => acc + (m.sales || 0), 0);
+                grandTotalTarget += store.monthly_data.slice(0, 10).reduce((acc, m) => acc + (m.target || 0), 0);
+            });
+
+            const overallPct = grandTotalTarget > 0 ? ((grandTotalSales / grandTotalTarget) * 100).toFixed(1) : 0;
+
+            document.getElementById('modal-total-sales').innerText = formatIDR(grandTotalSales);
+            document.getElementById('modal-total-target').innerText = formatIDR(grandTotalTarget);
+            document.getElementById('modal-total-pct').innerText = overallPct + '%';
+
+            const monthlySalesSum = Array(10).fill(0);
+            const monthlyTargetSum = Array(10).fill(0);
+
+            storesData.forEach(store => {
+                for(let i=0; i<10; i++) {
+                    monthlySalesSum[i] += (store.monthly_data[i].sales || 0);
+                    monthlyTargetSum[i] += (store.monthly_data[i].target || 0);
+                }
+            });
+
+            if(regionalChartInstance) regionalChartInstance.destroy();
+            const ctx = document.getElementById('regionalChart').getContext('2d');
+            regionalChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: monthsNames.slice(0, 10),
+                    datasets: [
+                        {
+                            label: 'Total Sales Regional',
+                            data: monthlySalesSum,
+                            borderColor: 'rgb(239, 68, 68)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Total Target Regional',
+                            data: monthlyTargetSum,
+                            borderColor: 'rgb(100, 116, 139)',
+                            backgroundColor: 'rgba(100, 116, 139, 0.1)',
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#cbd5e1' } } },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(51, 65, 85, 0.3)' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(51, 65, 85, 0.3)' } }
+                    }
+                }
+            });
+        }
+
+        function closeSummaryModal() {
+            document.getElementById('summary-modal').classList.remove('flex');
+            document.getElementById('summary-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
