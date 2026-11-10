@@ -110,16 +110,24 @@
 
             <!-- TAB 1: SALES & TARGET 2026 (INC. NOV-DEC) -->
             <div id="tabSales" class="space-y-6">
-                <!-- Filter Controls -->
+                <!-- Filter & Sorting Controls -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 flex flex-wrap gap-4 items-center justify-between">
                     <div>
-                        <h3 class="text-base font-bold text-slate-900">Data Capaian Sales & Target 2026 (Lengkap Nov-Des)</h3>
-                        <p class="text-xs text-slate-500">Klik tombol untuk input Sales / Target bulan November & Desember.</p>
+                        <h3 class="text-base font-bold text-slate-900">Data Capaian Sales & Target 2026</h3>
+                        <p class="text-xs text-slate-500">Urutkan berdasarkan sales atau capaian target tertinggi.</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                        <div class="flex-1 sm:flex-initial">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Urutkan Berdasarkan</label>
+                            <select id="sortBy" onchange="renderSalesData()" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <option value="default">No. Urut Store (Default)</option>
+                                <option value="salesHigh">Sales Tertinggi</option>
+                                <option value="targetHigh">Capaian Target Tertinggi (%)</option>
+                            </select>
+                        </div>
+                        <div>
                             <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Pilih Bulan</label>
-                            <select id="filterMonth" onchange="renderSalesData()" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500 w-full">
+                            <select id="filterMonth" onchange="renderSalesData()" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500">
                                 <option value="ALL">Semua Bulan (Kumulatif Jan - Des)</option>
                                 <option value="0">Januari</option>
                                 <option value="1">Februari</option>
@@ -160,7 +168,7 @@
                 <!-- Stores Table -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="p-4 sm:p-6 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
-                        <h3 class="font-bold text-slate-900 text-sm sm:text-base"><i class="fa-solid fa-store text-red-600 mr-2"></i>Daftar Store Regional Timur 2 & Input Nov-Des (Sales & Target)</h3>
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base"><i class="fa-solid fa-store text-red-600 mr-2"></i>Daftar Store Regional Timur 2 & Input Nov-Des</h3>
                         <div class="text-xs text-slate-500">Klik baris store untuk melihat grafik performa detail di bawah.</div>
                     </div>
                     <div class="overflow-x-auto max-h-[500px]">
@@ -305,10 +313,10 @@
             <input type="hidden" id="modalStoreIdx">
             <input type="hidden" id="modalMonthType">
             <div>
-                <label id="modalLabelSales" class="block text-xs font-bold text-slate-700 uppercase mb-1">Nilai Sales (Rp)</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nilai Sales (Rp)</label>
                 <input type="number" id="modalInputSalesVal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-red-500 mb-3">
                 
-                <label id="modalLabelTarget" class="block text-xs font-bold text-slate-700 uppercase mb-1">Nilai Target (Rp)</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nilai Target (Rp)</label>
                 <input type="number" id="modalInputTargetVal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-red-500">
             </div>
             <div class="flex justify-end space-x-2 pt-2">
@@ -320,10 +328,8 @@
 
     <!-- JAVASCRIPT LOGIC & GOOGLE SHEET SYNC -->
     <script>
-        // URL Web App Google Apps Script Anda
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwkn2XOtgH5AwLlf2-3znnF7m_o865eHTqiNXNTJQ8fpKZekpmTC5VXSFKSh56UlLlf/exec";
 
-        // Data Store lengkap untuk PT Ukhuwah Berkah Semesta (Regional Timur 2)
         const storeDatabase = [
             { no: 1, store: "AGS NGANJUK", openDate: "2019-08-03", sales2026: [132194500, 102239975, 152965250, 128645537, 128944350, 137521256, 132919025, 141354275, 120853900, 138001388, 0, 0], targets2026: [147000000, 127000000, 165000000, 136000000, 141000000, 141000000, 148000000, 145000000, 134000000, 138000000, 138000000, 140000000], sales2025: 1506893471, target2027: 150000000 },
             { no: 2, store: "AGS CARUBAN", openDate: "2019-06-26", sales2026: [168407600, 137585725, 214347025, 166247900, 177854350, 170447000, 171097375, 163746300, 140425050, 164808300, 0, 0], targets2026: [184000000, 161000000, 211000000, 173000000, 186000000, 186000000, 195000000, 197500000, 182500000, 189500000, 185000000, 190000000], sales2025: 2046109262, target2027: 190000000 },
@@ -385,7 +391,6 @@
         let storeDetailChartInstance = null;
         let regionalTrendChartInstance = null;
 
-        // Fungsi Sinkronisasi ke Google Sheet Web App
         async function syncToGoogleSheet(actionType, payloadData) {
             const statusEl = document.getElementById('syncStatus');
             statusEl.innerText = "Syncing...";
@@ -407,7 +412,6 @@
             }
         }
 
-        // Login Handler
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('inputName').value.trim();
@@ -427,7 +431,6 @@
             document.getElementById('inputRole').value = '';
         }
 
-        // Tab Switching
         function switchTab(tabId) {
             ['tabSales', 'tabVs2025', 'tabTarget2027', 'tabAnalysis'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
@@ -466,16 +469,18 @@
             updateStoreChart();
         }
 
-        // Render Sales Data & Table (Tab 1)
+        // Render Sales Data & Table with Sorting Feature
         function renderSalesData() {
             const monthFilter = document.getElementById('filterMonth').value;
+            const sortBy = document.getElementById('sortBy').value;
             const tbody = document.getElementById('storesTableBody');
             tbody.innerHTML = '';
 
             let totalSalesSum = 0;
             let totalTargetSum = 0;
 
-            storeDatabase.forEach((s, idx) => {
+            // Map data with calculated sales, target & achievement for sorting
+            let processedStores = storeDatabase.map((s, idx) => {
                 let salesVal = 0;
                 let targetVal = 0;
 
@@ -487,11 +492,28 @@
                     salesVal = s.sales2026[mIdx] || 0;
                     targetVal = s.targets2026[mIdx] || s.target;
                 }
+                const ach = targetVal > 0 ? (salesVal / targetVal) * 100 : 0;
+                return { s, idx, salesVal, targetVal, ach };
+            });
+
+            // Sorting logic
+            if(sortBy === 'salesHigh') {
+                processedStores.sort((a, b) => b.salesVal - a.salesVal);
+            } else if(sortBy === 'targetHigh') {
+                processedStores.sort((a, b) => b.ach - a.ach);
+            } else {
+                processedStores.sort((a, b) => a.s.no - b.s.no);
+            }
+
+            processedStores.forEach(item => {
+                const s = item.s;
+                const idx = item.idx;
+                const salesVal = item.salesVal;
+                const targetVal = item.targetVal;
+                const ach = item.ach;
 
                 totalSalesSum += salesVal;
                 totalTargetSum += targetVal;
-
-                const ach = targetVal > 0 ? (salesVal / targetVal) * 100 : 0;
                 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition";
@@ -521,7 +543,6 @@
             updateStoreChart();
         }
 
-        // Modal Handler for Nov / Dec Sales & Target input
         function openModal(storeIdx, monthIdx) {
             const s = storeDatabase[storeIdx];
             document.getElementById('modalStoreIdx').value = storeIdx;
@@ -551,7 +572,6 @@
             renderTarget2027Table();
             updateStoreChart();
 
-            // Sinkronisasi otomatis ke Google Sheet via Web App
             syncToGoogleSheet('saveSalesAndTarget', {
                 store: storeDatabase[storeIdx].store,
                 month: monthIdx === 10 ? 'November' : 'Desember',
@@ -562,7 +582,6 @@
             });
         }
 
-        // Update Store Detail Chart
         function updateStoreChart() {
             const idx = parseInt(document.getElementById('selectStoreChart').value);
             const store = storeDatabase[idx];
@@ -606,7 +625,6 @@
             });
         }
 
-        // Render Sales 2025 vs 2026 (Tab 2)
         function renderVsData() {
             const tbody = document.getElementById('vsTableBody');
             tbody.innerHTML = '';
@@ -640,7 +658,6 @@
             });
         }
 
-        // Render Target 2027 & Acuan VS 2026 (Tab 3)
         function renderTarget2027Table() {
             const tbody = document.getElementById('target2027TableBody');
             tbody.innerHTML = '';
@@ -681,7 +698,6 @@
             renderTarget2027Table();
         }
 
-        // Render Regional Trend Chart (Tab 4)
         function renderRegionalTrendChart() {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
             const monthlyTotals = months.map((_, mIdx) => {
